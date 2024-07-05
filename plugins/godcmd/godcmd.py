@@ -65,15 +65,19 @@ COMMANDS = {
         "alias": ["reset", "重置会话"],
         "desc": "重置会话",
     },
+    "status": {
+        "alias": ["status", "health", "状态", "状况", "在吗"],
+        "desc": "状态查询",
+    }
 }
 
 ADMIN_COMMANDS = {
     "resume": {
-        "alias": ["resume", "恢复服务"],
+        "alias": ["resume", "恢复服务", "起床", "醒醒", "起床了"],
         "desc": "恢复服务",
     },
     "stop": {
-        "alias": ["stop", "暂停服务"],
+        "alias": ["stop", "暂停服务", "睡觉", "晚安", "休息", "好梦"],
         "desc": "暂停服务",
     },
     "reconf": {
@@ -321,19 +325,29 @@ class Godcmd(Plugin):
                         ok, result = True, "会话已重置"
                     else:
                         ok, result = False, "当前对话机器人不支持重置会话"
+                elif cmd == "status":
+                    status_text = self.get_status_text(session_id)
+                    ok, result = True, status_text
                 logger.debug("[Godcmd] command: %s by %s" % (cmd, user))
             elif any(cmd in info["alias"] for info in ADMIN_COMMANDS.values()):
-                if isadmin:
-                    if isgroup:
+                if isadmin or self.is_admin_in_group(e_context["context"]):
+                    if isgroup and not conf().get("group_chat_admin_commands"):
                         ok, result = False, "群聊不可执行管理员指令"
                     else:
                         cmd = next(c for c, info in ADMIN_COMMANDS.items() if cmd in info["alias"])
+                        to_user_nickname = e_context["context"]["msg"].to_user_nickname
                         if cmd == "stop":
-                            self.isrunning = False
-                            ok, result = True, "服务已暂停"
+                            if self.isrunning:
+                                self.isrunning = False
+                                ok, result = True, f"{to_user_nickname}现在要进入甜甜的梦乡啦，啾咪😘再见啦💤"
+                            else:
+                                ok, result = True, f"亲爱的，{to_user_nickname}正沉浸在梦乡里呢，嘘~🌙不要吵醒我的美梦哦💤"
                         elif cmd == "resume":
-                            self.isrunning = True
-                            ok, result = True, "服务已恢复"
+                            if not self.isrunning:
+                                self.isrunning = True
+                                ok, result = True, f"{to_user_nickname}跳跳蹦蹦地从床上蹦了起来🏃新的一天开始啦🌞"
+                            else:
+                                ok, result = True, f"亲爱的，{to_user_nickname}正在这里玩得不亦乐乎呢~✨不许打扰我的快乐时光哦🎈"
                         elif cmd == "reconf":
                             load_config()
                             ok, result = True, "配置已重载"
@@ -460,6 +474,15 @@ class Godcmd(Plugin):
             return True, "认证成功，请尽快设置口令"
         else:
             return False, "认证失败"
+
+    def get_status_text(self, user_id):
+        bot_running_str = "Q我吧" if self.isrunning else "睡觉中"
+        is_admin = True if user_id in global_config["admin_users"] else False
+        user_level_str = "尊贵的管理员" if is_admin else "尊敬的用户"
+        chat_model_str = conf().get("model")
+        image_model_str = conf().get("text_to_image")
+        full_text = f"我的状态：{bot_running_str}\n你的身份：{user_level_str}\n对话模型：{chat_model_str}\n绘画模型：{image_model_str}"
+        return full_text
 
     def get_help_text(self, isadmin=False, isgroup=False, **kwargs):
         return get_help_text(isadmin, isgroup)

@@ -34,9 +34,13 @@ available_setting = {
     "group_name_white_list": ["ChatGPT测试群", "ChatGPT测试群2"],  # 开启自动回复的群名称列表
     "group_name_keyword_white_list": [],  # 开启自动回复的群名称关键词列表
     "group_chat_in_one_session": ["ChatGPT测试群"],  # 支持会话上下文共享的群名称
+    "group_chat_reply_wait_min": 5, # 最小延迟秒数，这里的值没意义
+    "group_chat_reply_wait_max": 10, # 最大延迟秒数
     "nick_name_black_list": [],  # 用户昵称黑名单
     "group_welcome_msg": "",  # 配置新人进群固定欢迎语，不配置则使用随机风格欢迎
     "trigger_by_self": False,  # 是否允许机器人触发
+    "reference_query_skipped": True,  # 是否过滤引用消息
+    "group_chat_admin_commands": False,  # 是否允许群聊中执行管理员指令
     "text_to_image": "dall-e-2",  # 图片生成模型，可选 dall-e-2, dall-e-3
     # Azure OpenAI dall-e-3 配置
     "dalle3_image_style": "vivid", # 图片生成dalle3的风格，可选有 vivid, natural
@@ -88,8 +92,6 @@ available_setting = {
     "dashscope_api_key": "",
     # Google Gemini Api Key
     "gemini_api_key": "",
-    # wework的通用配置
-    "wework_smart": True,  # 配置wework是否使用已登录的企业微信，False为多开
     # 语音设置
     "speech_recognition": True,  # 是否开启语音识别
     "group_speech_recognition": False,  # 是否开启群组语音识别
@@ -124,6 +126,8 @@ available_setting = {
     "hot_reload": False,  # 是否开启热重载
     # wechaty的配置
     "wechaty_puppet_service_token": "",  # wechaty的token
+    # ntchat的配置
+    "ntchat_smart": True,  # 配置ntchat是否使用已登录微信，False为多开
     # wechatmp的配置
     "wechatmp_token": "",  # 微信公众平台的Token
     "wechatmp_port": 8080,  # 微信公众平台的端口,需要端口转发到80或443
@@ -138,6 +142,11 @@ available_setting = {
     "wechatcomapp_secret": "",  # 企业微信app的secret
     "wechatcomapp_agent_id": "",  # 企业微信app的agent_id
     "wechatcomapp_aes_key": "",  # 企业微信app的aes_key
+    # wework的通用配置
+    "wework_smart": True,  # 配置wework是否使用已登录的企业微信，False为多开
+    # weworktop的配置
+    "wework_http": "http://127.0.0.1",  # weworktop通道http接口地址
+    "wework_callback_port": 8001,  # weworktop回调端口
     # 飞书配置
     "feishu_port": 80,  # 飞书bot监听端口
     "feishu_app_id": "",  # 飞书机器人应用APP Id
@@ -152,7 +161,7 @@ available_setting = {
     # chatgpt指令自定义触发词
     "clear_memory_commands": ["#清除记忆"],  # 重置会话指令，必须以#开头
     # channel配置
-    "channel_type": "",  # 通道类型，支持：{wx,wxy,terminal,wechatmp,wechatmp_service,wechatcom_app,dingtalk}
+    "channel_type": "",  # 通道类型，支持：{wx,wxy,ntchat,terminal,wechatmp,wechatmp_service,wechatcom_app,wework,weworktop,feishu,dingtalk}
     "subscribe_msg": "",  # 订阅消息, 支持: wechatmp, wechatmp_service, wechatcom_app
     "debug": False,  # 是否开启debug模式，开启后会打印更多日志
     "appdata_dir": "",  # 数据目录
@@ -175,6 +184,8 @@ available_setting = {
     "Minimax_api_key": "",
     "Minimax_group_id": "",
     "Minimax_base_url": "",
+    "group_chat_reply_wait_min": 5, # 最小延迟秒数，这里的值没意义
+    "group_chat_reply_wait_max": 10, # 最大延迟秒数
 }
 
 

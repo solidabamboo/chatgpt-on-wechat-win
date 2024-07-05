@@ -91,7 +91,7 @@ class ChatChannel(Channel):
 
         # 消息内容匹配过程，并处理content
         if ctype == ContextType.TEXT:
-            if first_in and "」\n- - - - - - -" in content:  # 初次匹配 过滤引用消息
+            if first_in and conf().get("reference_query_skipped") is True and "」\n- - - - - - -" in content:  # 初次匹配 过滤引用消息
                 logger.debug(content)
                 logger.debug("[chat_channel]reference query skipped")
                 return None
@@ -187,6 +187,7 @@ class ChatChannel(Channel):
         )
         reply = e_context["reply"]
         if not e_context.is_pass():
+            config = conf()
             logger.debug("[chat_channel] ready to handle context: type={}, content={}".format(context.type, context.content))
             if context.type == ContextType.TEXT or context.type == ContextType.IMAGE_CREATE:  # 文字和图片消息
                 context["channel"] = e_context["channel"]
@@ -223,9 +224,43 @@ class ChatChannel(Channel):
                     "path": context.content,
                     "msg": context.get("msg")
                 }
+            elif context.type == ContextType.LEAVE_GROUP:
+                if config.get("group_chat_exit_group"):
+                    reply = Reply()
+                    reply.type = ReplyType.INFO
+                    reply.content = context.content
+                else:
+                    pass
+            # 未来可自定义逻辑
             elif context.type == ContextType.SHARING:  # 分享信息，当前无默认逻辑
                 pass
             elif context.type == ContextType.FUNCTION or context.type == ContextType.FILE:  # 文件消息及函数调用等，当前无默认逻辑
+                pass
+            elif context.type == ContextType.CARD:
+                pass
+            elif context.type == ContextType.VIDEO:
+                pass
+            elif context.type == ContextType.EMOJI:
+                pass
+            elif context.type == ContextType.PATPAT:
+                pass
+            elif context.type == ContextType.QUOTE:
+                pass
+            elif context.type == ContextType.MINIAPP:
+                pass
+            elif context.type == ContextType.JOIN_GROUP:
+                pass
+            elif context.type == ContextType.EXIT_GROUP:
+                pass
+            elif context.type == ContextType.SYSTEM:
+                pass
+            elif context.type == ContextType.WCPAY:
+                pass
+            elif context.type == ContextType.WECHAT_VIDEO:
+                pass
+            elif context.type == ContextType.MP:
+                pass
+            elif context.type == ContextType.MP_LINK:
                 pass
             else:
                 logger.warning("[chat_channel] unknown context type: {}".format(context.type))
@@ -263,6 +298,24 @@ class ChatChannel(Channel):
                 elif reply.type == ReplyType.ERROR or reply.type == ReplyType.INFO:
                     reply.content = "[" + str(reply.type) + "]\n" + reply.content
                 elif reply.type == ReplyType.IMAGE_URL or reply.type == ReplyType.VOICE or reply.type == ReplyType.IMAGE or reply.type == ReplyType.FILE or reply.type == ReplyType.VIDEO or reply.type == ReplyType.VIDEO_URL:
+                    pass
+                elif reply.type == ReplyType.VIDEO_URL:
+                    pass
+                elif reply.type == ReplyType.CARD:
+                    pass
+                elif reply.type == ReplyType.InviteRoom:
+                    pass
+                elif reply.type == ReplyType.TEXT_:
+                    pass
+                elif reply.type == ReplyType.FILE:
+                    pass
+                elif reply.type == ReplyType.MINIAPP:
+                    pass
+                elif reply.type == ReplyType.LINK:
+                    pass
+                elif reply.type == ReplyType.CALL_UP:
+                    pass
+                elif reply.type == ReplyType.GIF:
                     pass
                 else:
                     logger.error("[chat_channel] unknown reply type: {}".format(reply.type))

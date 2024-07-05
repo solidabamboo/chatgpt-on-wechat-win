@@ -44,3 +44,21 @@ zhipuai>=2.0.1
 
 # tongyi qwen new sdk
 dashscope
+
+# sum4all
+python-docx
+python-pptx
+markdown
+PyMuPDF
+openpyxl
+beautifulsoup4
+#Pillow
+
+# NiceNetDisk
+#beautifulsoup4
+
+# NiceSuno
+pathvalidate
+
+# Countdown
+lunarcalendar

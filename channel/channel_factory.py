@@ -18,6 +18,9 @@ def create_channel(channel_type) -> Channel:
     elif channel_type == "wxy":
         from channel.wechat.wechaty_channel import WechatyChannel
         ch = WechatyChannel()
+    elif channel_type == "ntchat":
+        from channel.wechatnt.ntchat_channel import NtchatChannel
+        ch = NtchatChannel()
     elif channel_type == "terminal":
         from channel.terminal.terminal_channel import TerminalChannel
         ch = TerminalChannel()
@@ -33,6 +36,9 @@ def create_channel(channel_type) -> Channel:
     elif channel_type == "wework":
         from channel.wework.wework_channel import WeworkChannel
         ch = WeworkChannel()
+    elif channel_type == "weworktop":
+        from channel.weworktop.weworktop_channel import WeworkTopChannel
+        ch = WeworkTopChannel()
     elif channel_type == const.FEISHU:
         from channel.feishu.feishu_channel import FeiShuChanel
         ch = FeiShuChanel()
